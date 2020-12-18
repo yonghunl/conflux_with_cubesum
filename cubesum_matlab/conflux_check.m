@@ -5,18 +5,10 @@ function flag_conflux = conflux_check(chain_A, chain_B, alpha, beta, gamma, new_
 
 heavier_weight = max(weight_A, weight_B);
 lighter_weight = min(weight_A, weight_B);
-% if weight_A > weight_B
-%     heavier_weight = weight_A;
-%     lighter_weight = weight_B;
-% else
-%     heavier_weight = weight_B;
-%     lighter_weight = weight_A;
-% end
 
 % the default mode is 1, implying flag = 0 
 % flag = 1 only when operating mode 2 and satisfying all the 3 conditions.
 flag_conflux = 0; 
-
 
 % "f(a) < alpha" <=> "subTW(a) - sibling's subTW(a) < alpha" 
 if heavier_weight - lighter_weight <= alpha

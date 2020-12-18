@@ -1,21 +1,7 @@
 % decide which chain a honeset/adversarial node will choose
-% under liveness attack 
+% under liveness attack after honest node notice there is liveness attack
   
 function [chain_A, chain_B, weight_A, weight_B] = choose_chain(new_blc, chain_A, chain_B, weight_A, weight_B)
-
-% % calculate weight_A weight_B when there are adaptive weights
-% weight_A = 0;
-% for i = 1: length(chain_A)
-%     weight_A = weight_A + chain_A(i).weight;
-% end
-% weight_B = 0;
-% for i = 1: length(chain_B)
-%     weight_B = weight_B + chain_B(i).weight;
-% end
-
-% % calculate weight_A weight_B when there is no adaptive weights
-% weight_A = length(chain_A);
-% weight_B = length(chain_B);
 
 if new_blc.type == -1 % adv %(1:honest , -1: adv) 
     % adv attaches to 2nd longest chain

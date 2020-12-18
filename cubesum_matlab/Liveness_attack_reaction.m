@@ -1,5 +1,5 @@
 close all; clear all; clc;
-%% Liveness Attack Scenario for reation time 2
+%% Liveness Attack Scenario for reation time
 % honest nodes - following the heaviest chain
 % adv. nodes - keeping the balance b/t the 1st & 2nd heaviest chain
 % Compute and compare the reation time 1 for conflux and cubesum 
@@ -40,17 +40,16 @@ avg_reaction_2 = zeros(2, length(adv_ratio_arr));
 
 for n_adv_ratio = 1: length(adv_ratio_arr)
 
+    % set the block generation ratio for hon./adv. 
+    % according to the adv ratio
     adv_ratio  = adv_ratio_arr(n_adv_ratio);
-    
     adv_gen_rate = blc_gen_rate * adv_ratio;
     hon_gen_rate = blc_gen_rate * (1-adv_ratio);
 
-%     N_rep_adv = 50;
-    N_rep_adv = 20;
-    
     reaction_time_1 = zeros(2, N_rep_adv); % 1st row for cubesum; 2nd row for conflux
     reaction_time_2 = zeros(2, N_rep_adv); % 1st row for cubesum; 2nd row for conflux
     
+    N_rep_adv = 100;
     for n_rep_each_adv_ratio = 1: N_rep_adv
         
         % exponential distibution is memoryless 
@@ -119,7 +118,6 @@ for n_adv_ratio = 1: length(adv_ratio_arr)
                 end
             else
                 if  new_blc.type == ADV % adv. blc
-%                     [chain_A, chain_B, weight_A_new, weight_B_new] = choose_chain(new_blc, chain_A, chain_B, weight_A_prev, weight_B_prev);
                     if chain_for_adv == CHAIN_A
                         chain_A = [chain_A, new_blc];
                         weight_A_new = weight_A_prev + new_blc.weight;
@@ -137,6 +135,7 @@ for n_adv_ratio = 1: length(adv_ratio_arr)
                     end
                 end
             end
+            
             % Cube_sum - time to notice a liveness attack
             [new_blc.flag_cube, Delta_cube, B_cube] = cube_sum_check(chain_A, chain_B, B_cube, Delta_threshold, B_threshold, weight_A_new, weight_B_new);
             Cubesum_array(1,n_blc) = Delta_cube;
@@ -226,7 +225,6 @@ for n_adv_ratio = 1: length(adv_ratio_arr)
                 end
             else % conservative mode (mode 2)
                 if  new_blc.type == ADV % adv. blc
-%                     [chain_A, chain_B, weight_A_new, weight_B_new] = choose_chain(new_blc, chain_A, chain_B, weight_A_prev, weight_B_prev);
                     if chain_for_adv == CHAIN_A
                         chain_A = [chain_A, new_blc];
                         weight_A_new = weight_A_prev + new_blc.weight;
@@ -284,10 +282,7 @@ for n_adv_ratio = 1: length(adv_ratio_arr)
             end
             
         end % conflux reaction time (for n_blc)
-        
-        
-        
-        
+
     end% for of n_rep
 
     avg_reaction_time_1_cube = mean(reaction_time_1(1,:));
